@@ -1,0 +1,353 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ site_title|default:"My Portfolio" }} | Full Stack Developer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <!-- 3D Motion Layer (loaded after style.css so it can extend it) -->
+    <link rel="stylesheet" href="{% static 'css/animations-3d.css' %}" />
+    <!-- Pure black theme + per-section two-tone text palette -->
+    <link rel="stylesheet" href="{% static 'css/theme-black.css' %}" />
+  </head>
+  <body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top glass-navbar">
+      <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+      <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+          {% if profile_image %}
+          <img
+            src="{{ profile_image }}"
+            alt="Ahsan Manzoor"
+            class="brand-avatar rounded-circle me-2"
+            style="width: 48px; height: 48px; object-fit: cover"
+          />
+          {% endif %}
+          <span class="brand-text fst-italic"
+            >{{ site_title|default:'Ahsan Portfolio' }}</span
+          >
+        </a>
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="nav-3d-list position-relative">
+            <div class="nav-pill-3d" aria-hidden="true"></div>
+            <ul class="navbar-nav ms-auto text-center align-items-center">
+              <li class="nav-item">
+                <a class="nav-link px-3" href="#home" data-section="home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-3" href="#about" data-section="about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-3" href="#skills" data-section="skills">Skills</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-3" href="#projects" data-section="projects">Projects</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-3" href="#playground" data-section="playground">Playground</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-3" href="#contact" data-section="contact">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    {% if request.user.is_staff %}
+    <div class="container" style="margin-top: 70px">
+      <div
+        class="alert alert-info alert-dismissible fade show mt-2"
+        role="alert"
+      >
+        <strong>Admin:</strong> Use the admin to manage site content —
+        <a href="/admin/core/siteprofile/1/" class="alert-link">Site Profile</a>
+        (CV, profile image, hero text),
+        <a href="/admin/core/message/" class="alert-link">Messages</a>, and
+        other settings in the admin panel.
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+    {% endif %} {% block content %} {% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer py-5 mt-auto footer-section-bg">
+      <div class="footer-bg-overlay" aria-hidden="true"></div>
+      <div class="container footer-content">
+        <div class="row g-5 mb-5">
+
+          <!-- Column 1: Brand + About Portfolio -->
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-brand mb-4">
+              <span class="brand-text fst-italic" style="font-size:1.4rem;">
+                {{ footer_title|default:'Ahsan Portfolio' }}
+              </span>
+            </div>
+            <h6 class="footer-col-heading mb-3">About This Portfolio</h6>
+            <p class="footer-col-text mb-3">
+              This portfolio showcases the work, skills, and journey of <strong style="color:var(--secondary-color);">Ahsan Manzoor</strong> — a MERN Stack &amp; AI Developer building intelligent, scalable web applications.
+            </p>
+            <p class="footer-col-text small mb-4">
+              Built with <strong style="color:var(--primary-color);">Django</strong>, <strong style="color:var(--primary-color);">React</strong>, and powered by modern AI stacks including LangChain, LangGraph, and agentic workflows. Every section is dynamically managed through the admin panel.
+            </p>
+            <p class="footer-col-text small mb-4">
+              {{ footer_description|default:"Crafting elegant digital experiences with Python, Django, and AI-driven product thinking." }}
+            </p>
+            <!-- Social icons -->
+            <div class="d-flex gap-3 footer-social">
+              {% if profile.github %}
+              <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer"
+                class="footer-social-icon" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              {% endif %}
+              {% if profile.linkedin %}
+              <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer"
+                class="footer-social-icon" aria-label="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              {% endif %}
+              {% if whatsapp_link %}
+              <a href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer"
+                class="footer-social-icon" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Column 2: Navigation -->
+          <div class="col-lg-2 col-md-3 col-6">
+            <h6 class="footer-col-heading mb-4">Navigation</h6>
+            <ul class="list-unstyled footer-links">
+              <li><a href="#home"><i class="fas fa-chevron-right me-2 small"></i>Home</a></li>
+              <li><a href="#about"><i class="fas fa-chevron-right me-2 small"></i>About</a></li>
+              <li><a href="#skills"><i class="fas fa-chevron-right me-2 small"></i>Skills</a></li>
+              <li><a href="#projects"><i class="fas fa-chevron-right me-2 small"></i>Projects</a></li>
+              <li><a href="#playground"><i class="fas fa-chevron-right me-2 small"></i>Playground</a></li>
+              <li><a href="#contact"><i class="fas fa-chevron-right me-2 small"></i>Contact</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: What I Do -->
+          <div class="col-lg-3 col-md-3 col-6">
+            <h6 class="footer-col-heading mb-4">What I Do</h6>
+            <ul class="list-unstyled footer-links">
+              <li><i class="fas fa-check-circle me-2 text-primary small"></i>MERN Stack Development</li>
+              <li><i class="fas fa-check-circle me-2 text-primary small"></i>Agentic AI Systems</li>
+              <li><i class="fas fa-check-circle me-2 text-primary small"></i>LangChain / LangGraph</li>
+              <li><i class="fas fa-check-circle me-2 text-primary small"></i>REST API Design</li>
+              <li><i class="fas fa-check-circle me-2 text-primary small"></i>Real-time (Socket.IO)</li>
+              <li><i class="fas fa-check-circle me-2 text-primary small"></i>Django &amp; Python</li>
+            </ul>
+          </div>
+
+          <!-- Column 4: Contact -->
+          <div class="col-lg-3 col-md-6">
+            <h6 class="footer-col-heading mb-4">Get In Touch</h6>
+            <ul class="list-unstyled footer-contact-list">
+              <li class="mb-3">
+                <a href="mailto:ahsan1819randhawa@gmail.com" class="d-flex align-items-start gap-3">
+                  <span class="footer-icon-box"><i class="fas fa-envelope"></i></span>
+                  <span>ahsan1819randhawa@gmail.com</span>
+                </a>
+              </li>
+              {% if profile.linkedin %}
+              <li class="mb-3">
+                <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer"
+                   class="d-flex align-items-start gap-3">
+                  <span class="footer-icon-box"><i class="fab fa-linkedin"></i></span>
+                  <span>Connect on LinkedIn</span>
+                </a>
+              </li>
+              {% endif %}
+              {% if whatsapp_link %}
+              <li class="mb-3">
+                <a href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer"
+                   class="d-flex align-items-start gap-3">
+                  <span class="footer-icon-box"><i class="fab fa-whatsapp"></i></span>
+                  <span>{{ profile.whatsapp|default:'+92 3436052116' }}</span>
+                </a>
+              </li>
+              {% endif %}
+              {% if profile.github %}
+              <li class="mb-3">
+                <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer"
+                   class="d-flex align-items-start gap-3">
+                  <span class="footer-icon-box"><i class="fab fa-github"></i></span>
+                  <span>GitHub Profile</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Footer bottom bar -->
+        <div class="footer-bottom-bar d-flex flex-wrap align-items-center justify-content-between gap-3 pt-4">
+          <p class="mb-0 small footer-col-text">
+            {{ footer_copyright|default:"© 2026 Ahsan Manzoor. All rights reserved." }}
+          </p>
+          <p class="mb-0 small footer-col-text">
+            Built with <span class="text-primary">♥</span> using Django &amp; AI
+          </p>
+        </div>
+
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button
+      id="backToTop"
+      class="btn btn-primary rounded-circle shadow-lg d-none"
+    >
+      <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- External Scripts -->
+    <!-- jQuery (Optional but useful for some legacy plugins) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- AOS for scroll animations -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Typed.js for typing effect -->
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <!-- 3D Motion Controller (tilt / scroll-3D reveal / parallax) -->
+    <script src="{% static 'js/animations-3d.js' %}"></script>
+
+    <!-- ===================== AI CHATBOT WIDGET ===================== -->
+    <div id="chat-widget" class="chat-widget" role="complementary" aria-label="AI Assistant">
+
+      <!-- Floating toggle button -->
+      <button id="chat-toggle-btn" class="chat-toggle-btn" aria-label="Open AI Assistant" title="Chat with AI Assistant">
+        <span class="chat-toggle-icon chat-icon-open">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </span>
+        <span class="chat-toggle-icon chat-icon-close d-none">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </span>
+        <span class="chat-unread-badge d-none" id="chat-unread-badge">1</span>
+      </button>
+
+      <!-- Chat panel -->
+      <div id="chat-panel" class="chat-panel" aria-hidden="true">
+        <!-- Header -->
+        <div class="chat-header">
+          <div class="chat-header-avatar">
+            <span class="chat-ai-dot"></span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <div class="chat-header-info">
+            <p class="chat-header-name">Ahsan's AI Assistant</p>
+            <p class="chat-header-status"><span class="status-dot"></span>Online — ask me anything</p>
+          </div>
+          <button class="chat-header-close" id="chat-close-btn" aria-label="Close chat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+          <!-- Welcome message injected by JS -->
+        </div>
+
+        <!-- Suggested prompts -->
+        <div class="chat-suggestions" id="chat-suggestions">
+          <button class="chat-suggestion-pill" data-prompt="What skills does Ahsan have?">Skills</button>
+          <button class="chat-suggestion-pill" data-prompt="Tell me about Ahsan's projects">Projects</button>
+          <button class="chat-suggestion-pill" data-prompt="How can I hire Ahsan?">Hire Ahsan</button>
+          <button class="chat-suggestion-pill" data-prompt="What is Ahsan's experience?">Experience</button>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input-area">
+          <form id="chat-form" class="chat-form" autocomplete="off">
+            {% csrf_token %}
+            <textarea
+              id="chat-input"
+              class="chat-input"
+              placeholder="Ask about skills, projects, hiring..."
+              rows="1"
+              maxlength="500"
+              aria-label="Message input"
+            ></textarea>
+            <button type="submit" class="chat-send-btn" id="chat-send-btn" aria-label="Send message">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </form>
+          <p class="chat-footer-note">Powered by AI · Ahsan's Portfolio Assistant</p>
+        </div>
+      </div>
+    </div>
+    <!-- =================== END CHATBOT WIDGET =================== -->
+
+    <script src="{% static 'js/chatbot.js' %}"></script>
+
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        easing: "ease-in-out",
+        once: true,
+        mirror: false,
+      });
+    </script>
+  </body>
+</html>

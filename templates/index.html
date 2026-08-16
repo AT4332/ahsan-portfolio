@@ -1,0 +1,827 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% static 'img/profile-cutout.png' as default_cutout %}
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+  <div class="container">
+    <div class="row hero-row align-items-start">
+      <div
+        class="col-lg-6 text-center text-lg-start d-flex flex-column justify-content-start hero-text-col"
+        data-aos="fade-right"
+      >
+        <div class="hero-badge-pill mb-3">
+          <span class="hero-badge-text">{{ hero_badge }}</span>
+        </div>
+        <h5 class="text-primary fw-bold mb-3" id="dynamic-greeting">
+          Welcome, Visitor 👋
+        </h5>
+        <h1 class="hero-title shiny-text">{{ hero_title }}</h1>
+        <p class="lead mb-4">
+          I build <span id="typed-text" class="typed-text fw-bold"></span>
+        </p>
+        <p class="text-muted mb-3 fs-5">{{ hero_subtitle }}</p>
+        <p class="hero-highlight mb-5">
+          <i class="fas fa-rocket me-2"></i>{{ hero_highlight }}
+        </p>
+
+        <div
+          class="hero-cta d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 mb-4"
+        >
+          <a
+            href="#projects"
+            class="btn btn-primary btn-lg hero-btn rounded-pill px-4 py-3 shadow"
+          >
+            <i class="fas fa-briefcase me-2"></i>View Projects
+          </a>
+          <a
+            href="#contact"
+            class="btn btn-outline-primary btn-lg hero-btn rounded-pill px-4 py-3 shadow"
+          >
+            <i class="fas fa-envelope me-2"></i>Hire Me
+          </a>
+        </div>
+        <div
+          class="hero-social mt-3 d-flex justify-content-center justify-content-lg-start"
+        >
+          {% if profile.github %}
+          <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="mx-3 github"
+            ><i class="fab fa-github fa-2x"></i></a>
+          {% endif %}
+          {% if profile.linkedin %}
+          <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="mx-3 linkedin"
+            ><i class="fab fa-linkedin fa-2x"></i></a>
+          {% endif %}
+          {% if whatsapp_link %}
+          <a href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer" class="mx-3 twitter"
+            ><i class="fab fa-whatsapp fa-2x"></i></a>
+          {% endif %}
+        </div>
+      </div>
+      <div
+        class="col-lg-6 d-flex align-items-start justify-content-center hero-img-col"
+        data-aos="fade-left"
+      >
+        <div class="hero-image-frame position-relative">
+          <div class="image-glow-ring" aria-hidden="true"></div>
+          <div class="image-particles" aria-hidden="true">
+            <span class="particle p1"></span>
+            <span class="particle p2"></span>
+            <span class="particle p3"></span>
+            <span class="particle p4"></span>
+            <span class="particle p5"></span>
+          </div>
+          <div class="image-ground-shadow" aria-hidden="true"></div>
+          <img
+            src="{{ cutout_image|default:default_cutout }}"
+            alt="Ahsan Manzoor"
+            class="hero-cutout-img"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="section py-5 bg-white-50 about-section-bg">
+  <div class="container py-5">
+    <div class="row about-row align-items-start">
+      <div class="col-lg-5 mb-5 mb-lg-0 d-flex" data-aos="fade-right">
+        <div class="about-image-frame position-relative">
+          <div class="image-glow-ring" aria-hidden="true"></div>
+          <div class="image-particles" aria-hidden="true">
+            <span class="particle p1"></span>
+            <span class="particle p2"></span>
+            <span class="particle p3"></span>
+            <span class="particle p4"></span>
+            <span class="particle p5"></span>
+          </div>
+          <div class="image-ground-shadow" aria-hidden="true"></div>
+          <img
+            src="{{ cutout_image|default:default_cutout }}"
+            alt="Ahsan Manzoor"
+            class="about-cutout-img"
+          />
+        </div>
+      </div>
+      <div class="col-lg-7 ps-lg-5" data-aos="fade-left">
+        <h6 class="text-primary text-uppercase fw-bold mb-3">About Me</h6>
+        <h2 class="about-heading-text fw-bold mb-4 shiny-text">
+          {{ about_heading }}
+        </h2>
+        <p class="text-muted fs-5 mb-4">
+          {{ about_text }}
+        </p>
+        <p class="about-subheading mb-4">
+          {{ about_subheading }}
+        </p>
+
+        {% if currently_learning %}
+        <div
+          class="currently-learning mb-4 p-3 rounded-4 bg-light border-start border-primary border-5"
+        >
+          <h6 class="fw-bold text-primary mb-1">Currently Learning:</h6>
+          <p class="mb-0 text-muted">{{ currently_learning }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Timeline -->
+        <div class="timeline mb-5">
+          <h6 class="fw-bold text-primary text-uppercase mb-4">My Journey</h6>
+          {% for item in journey_items %}
+          <div
+            class="timeline-item position-relative ps-4 pb-4 border-start border-primary"
+          >
+            <div
+              class="timeline-dot bg-primary position-absolute rounded-circle"
+              style="width: 12px; height: 12px; left: -6px; top: 5px"
+            ></div>
+            <h6 class="fw-bold mb-1">{{ item.title }}</h6>
+            <p class="small text-muted mb-2">{{ item.period }}</p>
+            <p class="small mb-0 text-muted">{{ item.description }}</p>
+          </div>
+          {% empty %}
+          <div
+            class="timeline-item position-relative ps-4 pb-4 border-start border-primary"
+          >
+            <div
+              class="timeline-dot bg-primary position-absolute rounded-circle"
+              style="width: 12px; height: 12px; left: -6px; top: 5px"
+            ></div>
+            <h6 class="fw-bold mb-1">MERN Stack AI Developer</h6>
+            <p class="small text-muted mb-2">2024 - Present | Tech Solutions</p>
+            <p class="small mb-0 text-muted">
+              Building AI-powered MERN stack applications with agentic workflows,
+              LangGraph pipelines, and modern full-stack architectures.
+            </p>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="d-flex flex-wrap gap-3">
+          {% if cv_path %}
+          <button
+            type="button"
+            id="open-cv-btn"
+            class="btn btn-primary rounded-pill px-4 py-3 shadow"
+            data-cv="{{ cv_path }}"
+            data-bs-toggle="modal"
+            data-bs-target="#cvModal"
+          >
+            <i class="fas fa-eye me-2"></i>View CV
+          </button>
+          <a
+            href="{{ cv_path }}"
+            class="btn btn-outline-primary rounded-pill px-4 py-3 shadow"
+            download
+          >
+            <i class="fas fa-download me-2"></i>Download CV
+          </a>
+          {% else %}
+          <a
+            href="#"
+            class="btn btn-secondary rounded-pill px-4 py-3 shadow disabled"
+          >
+            <i class="fas fa-file-pdf me-2"></i>CV Not Available
+          </a>
+          {% endif %}
+          <a
+            href="#contact"
+            class="btn btn-outline-secondary rounded-pill px-4 py-3 shadow"
+          >
+            Learn More <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills" class="section py-5 bg-light">
+  <div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h6 class="text-primary text-uppercase fw-bold mb-2">My Expertise</h6>
+      <h2 class="display-5 fw-bold">Skills & Proficiency</h2>
+      <div
+        class="underline mx-auto mt-3 bg-primary"
+        style="height: 4px; width: 60px"
+      ></div>
+    </div>
+
+    <!-- Skills Category Tabs -->
+    <div class="d-flex justify-content-center mb-5" data-aos="fade-up">
+      <div
+        class="btn-group filter-btn-group flex-wrap justify-content-center shadow-sm rounded-pill p-1 bg-light"
+        role="group"
+      >
+        <button type="button" class="btn btn-filter active px-3 px-md-4 rounded-pill" data-filter="all">
+          All
+        </button>
+        <button type="button" class="btn btn-filter px-3 px-md-4 rounded-pill" data-filter="AI">
+          <i class="fas fa-robot me-1"></i>AI
+        </button>
+        <button type="button" class="btn btn-filter px-3 px-md-4 rounded-pill" data-filter="Frontend">
+          Frontend
+        </button>
+        <button type="button" class="btn btn-filter px-3 px-md-4 rounded-pill" data-filter="Backend">
+          Backend
+        </button>
+        <button type="button" class="btn btn-filter px-3 px-md-4 rounded-pill" data-filter="Full Stack">
+          Full Stack
+        </button>
+        <button type="button" class="btn btn-filter px-3 px-md-4 rounded-pill" data-filter="Tools">
+          Tools
+        </button>
+        <button type="button" class="btn btn-filter px-3 px-md-4 rounded-pill" data-filter="Database">
+          Database
+        </button>
+      </div>
+    </div>
+
+    <div id="skills-container" class="row g-3">
+      {% for skill in skills %}
+      <div
+        class="col-lg-2 col-md-3 col-4 skill-item"
+        data-category="{{ skill.category }}"
+      >
+        <div class="skill-icon-card" tabindex="0" title="{{ skill.skill_name }}">
+          <div class="skill-icon-inner">
+            <i class="{{ skill.icon_prefix|default:'fab' }} {{ skill.icon|default:'fa-code' }} fa-2x"></i>
+          </div>
+          <span class="skill-hover-name">{{ skill.skill_name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="section py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h6 class="text-primary text-uppercase fw-bold mb-2">My Portfolio</h6>
+      <h2 class="display-5 fw-bold">Featured Projects</h2>
+      <div
+        class="underline mx-auto mt-3 bg-primary"
+        style="height: 4px; width: 60px"
+      ></div>
+    </div>
+
+    <!-- Projects Filter & Search -->
+    <div class="row mb-5 g-3 align-items-center" data-aos="fade-up">
+      <div class="col-lg-8">
+        <div
+          class="btn-group project-filter-group flex-wrap shadow-sm rounded-pill p-1 bg-light"
+          role="group"
+        >
+          <button type="button" class="btn btn-project-filter active px-3 px-md-4 rounded-pill" data-filter="all">All</button>
+          <button type="button" class="btn btn-project-filter px-3 px-md-4 rounded-pill" data-filter="Frontend">Frontend</button>
+          <button type="button" class="btn btn-project-filter px-3 px-md-4 rounded-pill" data-filter="Backend">Backend</button>
+          <button type="button" class="btn btn-project-filter px-3 px-md-4 rounded-pill" data-filter="Full Stack">Full Stack</button>
+          <button type="button" class="btn btn-project-filter px-3 px-md-4 rounded-pill" data-filter="Agents"><i class="fas fa-robot me-1"></i>Agents</button>
+          <button type="button" class="btn btn-project-filter px-3 px-md-4 rounded-pill" data-filter="AI Assistant"><i class="fas fa-brain me-1"></i>AI Assistant</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div
+          class="input-group search-group shadow-sm rounded-pill overflow-hidden position-relative"
+        >
+          <span class="input-group-text border-0 bg-light"
+            ><i class="fas fa-search text-muted"></i
+          ></span>
+          <input
+            type="text"
+            id="project-search"
+            class="form-control border-0 bg-light py-2"
+            placeholder="Search projects by name, tech, or category..."
+          />
+          <button
+            type="button"
+            id="project-search-clear"
+            class="btn border-0 bg-light d-none"
+            aria-label="Clear search"
+            title="Clear search"
+          >
+            <i class="fas fa-times text-muted"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="projects-container" class="row g-4">
+      {% for project in projects %}
+      <div
+        class="col-lg-4 col-md-6 project-item"
+        data-category="{{ project.category }}"
+        data-aos="fade-up"
+      >
+        <div
+          class="project-card rounded-4 overflow-hidden bg-white shadow-sm h-100 reveal-on-scroll"
+        >
+          <div class="project-img-wrapper position-relative overflow-hidden">
+            <img
+              src="{{ project.image_url }}"
+              alt="{{ project.title }}"
+              class="img-fluid project-img transition"
+            />
+            <div
+              class="project-overlay d-flex align-items-center justify-content-center"
+            >
+              <div class="text-center">
+                {% if project.github_link %}
+                <a
+                  href="{{ project.github_link }}"
+                  class="btn btn-light rounded-circle mx-2 shadow-sm"
+                  target="_blank"
+                  ><i class="fab fa-github"></i
+                ></a>
+                {% endif %} {% if project.live_demo %}
+                <a
+                  href="{{ project.live_demo }}"
+                  class="btn btn-light rounded-circle mx-2 shadow-sm"
+                  target="_blank"
+                  ><i class="fas fa-external-link-alt"></i
+                ></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="project-content p-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="badge bg-soft-primary text-primary"
+                >{{ project.category }}</span
+              >
+            </div>
+            <h4 class="fw-bold mb-3">{{ project.title }}</h4>
+            <p class="text-muted small mb-4">{{ project.description }}</p>
+            <div class="tech-stack d-flex flex-wrap gap-2">
+              {% for tech in project.tech_list %}
+              <span class="badge bg-light text-secondary rounded-pill"
+                >{{ tech }}</span
+              >
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div id="projects-empty-state" class="text-center py-5 d-none">
+      <i class="fas fa-folder-open fa-3x mb-3 text-muted"></i>
+      <h5 class="fw-bold mb-1">No projects found</h5>
+      <p class="text-muted mb-0">
+        Try a different search term or choose another category.
+      </p>
+    </div>
+
+    <!-- User Reviews Section -->
+    <div class="mt-5 pt-5" data-aos="fade-up">
+      <div class="text-center mb-5">
+        <h6 class="text-primary text-uppercase fw-bold mb-2">Testimonials</h6>
+        <h2 class="display-6 fw-bold">What Clients Say</h2>
+      </div>
+      <div class="row g-4">
+        {% for testimonial in testimonials %}
+        <div class="col-md-4">
+          <div class="review-card h-100 reveal-on-scroll">
+            <div class="mb-3 text-warning">
+              {% for star_class in testimonial.star_classes %}
+              <i class="{{ star_class }}"></i>
+              {% endfor %}
+            </div>
+            <p class="text-muted mb-4 italic">"{{ testimonial.quote }}"</p>
+            <div class="d-flex align-items-center">
+              <div
+                class="avatar bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center"
+                style="width: 45px; height: 45px"
+              >
+                {{ testimonial.name|slice:':1' }}
+              </div>
+              <div>
+                <h6 class="fw-bold mb-0">{{ testimonial.name }}</h6>
+                <small class="text-muted"
+                  >{{ testimonial.role }}{% if testimonial.company %}, {{
+                  testimonial.company }}{% endif %}</small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center text-muted">
+          <p>No testimonials added yet. Add them from the admin panel.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Playground Section -->
+<section id="playground" class="section py-5 bg-dark text-white">
+  <!-- Static content from index.php Playground -->
+  <div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h6 class="text-primary text-uppercase fw-bold mb-2">Interactive Demo</h6>
+      <h2 class="display-5 fw-bold text-white">Developer Playground</h2>
+      <div
+        class="underline mx-auto mt-3 bg-primary"
+        style="height: 4px; width: 60px"
+      ></div>
+    </div>
+
+    <div class="row g-4">
+      <!-- To-Do App Tool -->
+      <div class="col-lg-4 col-md-6" data-aos="flip-left">
+        <div
+          class="playground-card p-4 rounded-4 bg-glass-dark border border-secondary reveal-on-scroll"
+        >
+          <h5 class="fw-bold mb-3">
+            <i class="fas fa-list-check text-primary me-2"></i>Smart To-Do
+          </h5>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              id="todo-input"
+              class="form-control bg-transparent text-white border-secondary"
+              placeholder="Add a task..."
+            />
+            <button class="btn btn-primary" id="add-todo">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <ul
+            id="todo-list"
+            class="list-unstyled mb-0"
+            style="max-height: 200px; overflow-y: auto"
+          >
+            <!-- Tasks go here -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Calculator Tool -->
+      <div class="col-lg-4 col-md-6" data-aos="flip-up">
+        <div
+          class="playground-card p-4 rounded-4 bg-glass-dark border border-secondary reveal-on-scroll"
+        >
+          <h5 class="fw-bold mb-3">
+            <i class="fas fa-calculator text-primary me-2"></i>Quick Calc
+          </h5>
+          <div
+            class="calculator-display bg-black-50 p-2 mb-3 rounded text-end fs-4 font-monospace overflow-hidden"
+            id="calc-display"
+          >
+            0
+          </div>
+          <div class="row g-2">
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="7">
+                7
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="8">
+                8
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="9">
+                9
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="/">
+                /
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="4">
+                4
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="5">
+                5
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="6">
+                6
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="*">
+                *
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="1">
+                1
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="2">
+                2
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="3">
+                3
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="-">
+                -
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="0">
+                0
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val=".">
+                .
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="=">
+                =
+              </button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="+">
+                +
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="btn btn-outline-light w-100 calc-btn" data-val="C">
+                C
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Backend API Tester Tool -->
+      <div class="col-lg-4 col-md-6" data-aos="flip-right">
+        <div
+          class="playground-card p-4 rounded-4 bg-glass-dark border border-secondary reveal-on-scroll"
+        >
+          <h5 class="fw-bold mb-3">
+            <i class="fas fa-server text-primary me-2"></i>API Tester
+          </h5>
+          <p class="small text-muted mb-3">
+            Send a string to our Django backend and see it reversed/processed.
+          </p>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              id="api-input"
+              class="form-control bg-transparent text-white border-secondary"
+              placeholder="Enter text..."
+            />
+            <button class="btn btn-primary" id="test-api">Process</button>
+          </div>
+          <div
+            id="api-result"
+            class="p-2 rounded bg-black-50 text-success small font-monospace d-none"
+          >
+            <!-- Result shows here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h6 class="text-primary text-uppercase fw-bold mb-2">Get In Touch</h6>
+      <h2 class="display-5 fw-bold">Contact Me</h2>
+      <div
+        class="underline mx-auto mt-3 bg-primary"
+        style="height: 4px; width: 60px"
+      ></div>
+    </div>
+
+    <div class="row justify-content-center" data-aos="zoom-in-up">
+      <div class="col-lg-10">
+        <div
+          class="contact-wrapper glass-card rounded-4 shadow-lg overflow-hidden reveal-on-scroll"
+        >
+          <div class="row g-0">
+            <!-- Contact Info sidebar -->
+            <div
+              class="col-lg-5 bg-primary text-white contact-info-col"
+              data-aos="fade-right"
+            >
+              <div class="contact-info-inner">
+                <h3 class="fw-bold mb-4">Contact Info</h3>
+                <p class="mb-5 opacity-85">
+                  Feel free to reach out for collaborations or just a friendly hello!
+                </p>
+
+                <div class="d-flex align-items-center mb-4 contact-link-card">
+                  <div class="icon-box me-3 bg-white-20 rounded-circle p-3">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">Email</h6>
+                    <a href="mailto:ahsan1819randhawa@gmail.com" class="text-white text-decoration-none small">
+                      ahsan1819randhawa@gmail.com
+                    </a>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-4 contact-link-card">
+                  <div class="icon-box me-3 bg-white-20 rounded-circle p-3">
+                    <i class="fab fa-linkedin"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">LinkedIn</h6>
+                    <a
+                      href="{{ profile.linkedin|default:'https://www.linkedin.com/in/ahsan-manzoor-7b2075427' }}"
+                      target="_blank"
+                      class="text-white text-decoration-none small"
+                      >Connect on LinkedIn</a
+                    >
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-4 contact-link-card">
+                  <div class="icon-box me-3 bg-white-20 rounded-circle p-3">
+                    <i class="fab fa-whatsapp"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">WhatsApp</h6>
+                    <a
+                      href="{{ whatsapp_link }}"
+                      target="_blank"
+                      class="text-white text-decoration-none small"
+                      >{{ profile.whatsapp|default:'+92 3436052116' }}</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7 p-5" data-aos="fade-left">
+              <h3 class="fw-bold mb-4">Send Message</h3>
+              <form
+                id="contact-form"
+                class="row g-3"
+                method="POST"
+                action="{% url 'contact' %}"
+              >
+                {% csrf_token %}
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control rounded-pill px-4 py-2 border-light bg-light"
+                    placeholder="Your Name"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control rounded-pill px-4 py-2 border-light bg-light"
+                    placeholder="Your Email"
+                    required
+                  />
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-bold">Subject</label>
+                  <input
+                    type="text"
+                    name="subject"
+                    class="form-control rounded-pill px-4 py-2 border-light bg-light"
+                    placeholder="Project Inquiry"
+                    required
+                  />
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-bold">Message</label>
+                  <textarea
+                    name="message"
+                    rows="4"
+                    class="form-control rounded-4 px-4 py-3 border-light bg-light"
+                    placeholder="How can I help you?"
+                    required
+                  ></textarea>
+                </div>
+                <div class="col-12 text-center">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm"
+                  >
+                    Send Message <i class="fas fa-paper-plane ms-2"></i>
+                  </button>
+                </div>
+                <div id="form-status" class="mt-3 d-none"></div>
+                <div class="col-12">
+                  <p class="small text-muted mt-2">
+                    Your message will be stored and sent to the contact email
+                    configured in admin.
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div
+  id="toastSuccess"
+  class="toast-success"
+  role="status"
+  aria-live="polite"
+></div>
+<!-- CV Viewer Modal -->
+<div class="modal fade" id="cvModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered" id="cvModalDialog">
+    <div class="modal-content">
+      <div
+        class="modal-header d-flex align-items-center justify-content-between"
+      >
+        <h5 class="modal-title">Curriculum Vitae</h5>
+        <div class="d-flex align-items-center">
+          <a
+            href="#"
+            id="cv-open-new-tab"
+            target="_blank"
+            class="btn btn-sm btn-outline-primary me-2"
+            title="Open in new tab"
+          >
+            <i class="fas fa-external-link-alt me-1"></i>Open in New Tab
+          </a>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary me-2"
+            id="cv-minimize"
+            title="Minimize"
+          >
+            _
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary me-2"
+            id="cv-maximize"
+            title="Fullscreen"
+          >
+            <i class="fas fa-expand"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-danger"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="modal-body p-0 position-relative" style="height: 80vh">
+        <div
+          id="cv-error-container"
+          class="d-none position-absolute top-50 start-50 translate-middle text-center p-4 bg-light rounded-4 border shadow"
+          style="z-index: 10"
+        >
+          <i class="fas fa-exclamation-circle text-danger fa-3x mb-3"></i>
+          <h5 class="fw-bold" id="cv-error-title">Unable to Display CV</h5>
+          <p class="text-muted small mb-3" id="cv-error-text">
+            The CV file is either missing or could not be loaded inside this
+            view.
+          </p>
+          <a
+            href="#"
+            id="cv-fallback-link"
+            target="_blank"
+            class="btn btn-primary rounded-pill px-4"
+          >
+            <i class="fas fa-external-link-alt me-2"></i>Open CV in New Tab
+          </a>
+        </div>
+        <iframe
+          id="cv-iframe"
+          src=""
+          frameborder="0"
+          style="width: 100%; height: 100%"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,389 @@
+/* ============================================================
+   3D MOTION LAYER — adds real perspective/tilt/depth animation
+   to every section, card, button and content block.
+   Loaded AFTER style.css so it can extend/override safely.
+   ============================================================ */
+
+/* Give the whole page real 3D depth to render children in */
+html, body {
+    perspective: 1600px;
+    perspective-origin: 50% 40%;
+}
+
+/* ---------- Sections: enter the page rotated in 3D space ---------- */
+.section,
+.hero-section {
+    transform-style: preserve-3d;
+}
+
+.section-3d-in {
+    opacity: 0;
+    transform: perspective(1600px) translateY(70px) rotateX(14deg) scale(0.96);
+    transform-origin: 50% 100%;
+    transition: opacity 1s cubic-bezier(0.16, 0.84, 0.44, 1),
+                transform 1s cubic-bezier(0.16, 0.84, 0.44, 1);
+    will-change: transform, opacity;
+}
+
+.section-3d-in.in-view {
+    opacity: 1;
+    transform: perspective(1600px) translateY(0) rotateX(0deg) scale(1);
+}
+
+/* ---------- Generic 3D tilt wrapper (JS adds this to cards/media/icons) ---------- */
+.tilt-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s ease;
+    will-change: transform;
+}
+
+.tilt-3d:not(.project-card) > * {
+    transform: translateZ(20px);
+}
+
+/* ---------- Every div/block that should fly/flip in on scroll ---------- */
+.block-3d-in {
+    opacity: 0;
+    transform: perspective(1200px) rotateY(28deg) translateX(40px) translateZ(-60px);
+    transition: opacity 0.9s cubic-bezier(0.16, 0.84, 0.44, 1),
+                transform 0.9s cubic-bezier(0.16, 0.84, 0.44, 1);
+    will-change: transform, opacity;
+}
+
+.block-3d-in.from-left {
+    transform: perspective(1200px) rotateY(-28deg) translateX(-40px) translateZ(-60px);
+}
+
+.block-3d-in.in-view {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(0deg) translateX(0) translateZ(0);
+}
+
+/* Upgrade the existing reveal-on-scroll flip to a true 3D flip */
+.reveal-on-scroll {
+    transform: perspective(1200px) translateY(30px) rotateX(18deg) scale(0.97);
+    transform-origin: 50% 100%;
+}
+
+.reveal-on-scroll.is-visible {
+    transform: perspective(1200px) translateY(0) rotateX(0deg) scale(1);
+}
+
+/* ---------- Skills: real 3D flip cards ---------- */
+.skill-flip-outer {
+    perspective: 1200px;
+    cursor: pointer;
+    outline: none;
+}
+
+.skill-flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 190px;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skill-flip-outer:hover .skill-flip-inner,
+.skill-flip-outer:focus .skill-flip-inner,
+.skill-flip-outer.is-flipped .skill-flip-inner {
+    transform: rotateY(180deg);
+}
+
+.skill-card-front,
+.skill-card-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.skill-card-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 20px 45px rgba(108, 92, 231, 0.35);
+}
+
+.skill-icon-back {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Gentle continuous 3D wobble so cards feel alive even before hover */
+.skill-flip-outer {
+    animation: skillWobble 5s ease-in-out infinite;
+}
+
+.skill-flip-outer:nth-child(odd) { animation-delay: 0.4s; }
+
+@keyframes skillWobble {
+    0%, 100% { transform: perspective(1200px) rotateX(0deg); }
+    50%      { transform: perspective(1200px) rotateX(3deg); }
+}
+
+/* ---------- Projects: layered 3D depth on tilt (JS sets rotateX/Y on card) ---------- */
+.project-card {
+    transform-style: preserve-3d;
+}
+
+.project-img-wrapper,
+.project-overlay,
+.project-content {
+    transform-style: preserve-3d;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card:hover .project-img-wrapper {
+    transform: translateZ(-20px) scale(1.02);
+}
+
+.project-card:hover .project-overlay {
+    transform: translateZ(50px);
+}
+
+.project-card:hover .project-content {
+    transform: translateZ(35px);
+}
+
+.project-card .project-content h4,
+.project-card .project-content .tech-stack,
+.project-card .project-content .badge {
+    transform: translateZ(10px);
+}
+
+/* ---------- Buttons: real 3D press + depth ---------- */
+.btn,
+.magnetic-btn {
+    transform-style: preserve-3d;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    transform: translateZ(1px);
+}
+
+.btn:hover::before {
+    opacity: 1;
+}
+
+.btn:active {
+    transform: translateZ(-6px) scale(0.97) !important;
+    transition: transform 0.12s ease;
+}
+
+/* ---------- Cards / media / icon boxes: depth on hover ---------- */
+.card:hover,
+.skill-card:hover,
+.project-card:hover,
+.glass-card:hover,
+.contact-link-card:hover,
+.icon-box:hover,
+.experience-badge:hover,
+.timeline-item:hover .timeline-dot {
+    box-shadow: 0 30px 70px rgba(108, 92, 231, 0.28), 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+.icon-box,
+.experience-badge,
+.timeline-dot,
+.avatar {
+    transform-style: preserve-3d;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.icon-box:hover,
+.avatar:hover {
+    transform: translateZ(24px) rotateY(12deg) scale(1.08);
+}
+
+.timeline-item:hover .timeline-dot {
+    transform: translateZ(18px) scale(1.4);
+}
+
+/* ---------- Hero / About cutouts: floating 3D parallax ---------- */
+.hero-image-frame,
+.about-image-frame {
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.hero-cutout-img,
+.about-cutout-img {
+    transform-style: preserve-3d;
+}
+
+@keyframes float3d {
+    0%, 100% { transform: translateY(0) translateZ(0) rotateX(0) rotateY(0); }
+    50%      { transform: translateY(-14px) translateZ(30px) rotateX(3deg) rotateY(-3deg); }
+}
+
+.float-3d {
+    animation: float3d 6s ease-in-out infinite;
+}
+
+/* Pause the idle float while the existing hover pop-out (from style.css)
+   is active, so the two transforms don't fight over the same element */
+.hero-image-frame:hover .hero-cutout-img,
+.about-image-frame:hover .about-cutout-img {
+    animation-play-state: paused;
+}
+
+/* ---------- Badges / pills: subtle depth pop ---------- */
+.hero-badge-pill,
+.badge,
+.underline {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.hero-badge-pill:hover,
+.badge:hover {
+    transform: translateZ(14px) scale(1.06);
+}
+
+/* ---------- Nav links: small 3D lift ---------- */
+.nav-link {
+    transform-style: preserve-3d;
+    transition: transform 0.25s ease, color 0.25s ease;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+}
+
+.nav-link:hover {
+    transform: translateZ(10px) translateY(-2px);
+}
+
+.nav-link.active-link {
+    color: var(--secondary-color) !important;
+    text-shadow: 0 0 12px rgba(0, 210, 255, 0.7);
+}
+
+/* ---------- 3D sliding active-section pill behind the nav links ---------- */
+.nav-3d-list {
+    position: relative;
+}
+
+.nav-pill-3d {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 34px;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(120deg, rgba(139, 123, 255, 0.35), rgba(0, 229, 255, 0.25));
+    border: 1px solid rgba(139, 123, 255, 0.4);
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.25);
+    transform: translateY(-50%) translateZ(-4px) perspective(600px) rotateX(0deg);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.nav-pill-3d.visible {
+    opacity: 1;
+}
+
+/* ---------- Brand logo: playful 3D spin on hover ---------- */
+.navbar-brand {
+    transform-style: preserve-3d;
+}
+
+.brand-avatar {
+    transform-style: preserve-3d;
+}
+
+.navbar-brand:hover .brand-avatar {
+    animation: logoSpin3d 0.8s ease;
+}
+
+@keyframes logoSpin3d {
+    0%   { transform: perspective(400px) rotateY(0deg) scale(1); }
+    50%  { transform: perspective(400px) rotateY(180deg) scale(1.15); }
+    100% { transform: perspective(400px) rotateY(360deg) scale(1.1); }
+}
+
+/* ---------- Navbar gains depth as the page scrolls ---------- */
+.glass-navbar {
+    transform-style: preserve-3d;
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.glass-navbar.scrolled {
+    box-shadow: 0 20px 45px rgba(3, 8, 16, 0.55), 0 0 0 1px rgba(139, 123, 255, 0.12);
+}
+
+/* ---------- Mobile menu: 3D stagger flip-in when opened ---------- */
+@media (max-width: 991.98px) {
+    .nav-3d-list .nav-item {
+        opacity: 0;
+        transform: perspective(800px) rotateX(-45deg) translateY(-10px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .navbar-collapse.show .nav-3d-list .nav-item,
+    .navbar-collapse.collapsing .nav-3d-list .nav-item {
+        opacity: 1;
+        transform: perspective(800px) rotateX(0deg) translateY(0);
+    }
+
+    .navbar-collapse.show .nav-3d-list .nav-item:nth-child(2) { transition-delay: 0.05s; }
+    .navbar-collapse.show .nav-3d-list .nav-item:nth-child(3) { transition-delay: 0.1s; }
+    .navbar-collapse.show .nav-3d-list .nav-item:nth-child(4) { transition-delay: 0.15s; }
+    .navbar-collapse.show .nav-3d-list .nav-item:nth-child(5) { transition-delay: 0.2s; }
+    .navbar-collapse.show .nav-3d-list .nav-item:nth-child(6) { transition-delay: 0.25s; }
+
+    .nav-pill-3d { display: none; }
+}
+
+/* ---------- Form fields: gentle 3D lift on focus ---------- */
+.form-control,
+textarea.form-control,
+.form-select {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus,
+textarea.form-control:focus {
+    transform: translateZ(12px);
+    box-shadow: 0 14px 30px rgba(108, 92, 231, 0.22);
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .section-3d-in,
+    .block-3d-in,
+    .reveal-on-scroll,
+    .tilt-3d,
+    .float-3d,
+    .icon-box,
+    .avatar,
+    .hero-badge-pill,
+    .badge,
+    .nav-link,
+    .form-control {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}
